@@ -1,0 +1,11 @@
+.app {
+  display: grid;
+  grid-template-rows: 48px 1fr;
+  grid-template-columns: 56px 1fr;
+  height: 100vh;
+  overflow: hidden;
+  background: #020617;
+}
+.app > :first-child {
+  grid-column: 1 / -1;
+}

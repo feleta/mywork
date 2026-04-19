@@ -1,0 +1,60 @@
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 0;
+  background: #1a3a5c;
+  border-right: 1px solid #2d5a8e;
+  overflow-y: auto;
+  width: 56px;
+}
+
+.addBtn {
+  width: 40px; height: 40px;
+  border-radius: 8px;
+  border: 1px dashed #4a90d9;
+  background: transparent;
+  color: #7ec8f0;
+  font-size: 20px;
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.addBtn:hover { border-color: #7dd3fc; color: #bae6fd; }
+
+.divider {
+  width: 32px;
+  height: 1px;
+  background: #2d5a8e;
+  flex-shrink: 0;
+}
+
+.icon {
+  width: 40px; height: 40px;
+  border-radius: 8px;
+  background: #1e4a7a;
+  border: 2px solid transparent;
+  cursor: pointer;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  flex-shrink: 0;
+  transition: border-color 0.15s;
+  position: relative;
+}
+.icon:hover { border-color: #4a90d9; }
+.icon.active   { border-color: #7dd3fc; background: #0c4a6e; }
+.icon.selected { border-color: #a78bfa; background: #2e1065; }
+.icon.master   { background: #3d2a00; }
+.icon.master.active { border-color: #fbbf24; background: #5a3a00; }
+
+.crown {
+  font-size: 9px;
+  color: #fbbf24;
+  line-height: 1;
+  position: absolute;
+  top: 3px;
+  right: 4px;
+}
+
+.iconLabel { font-size: 11px; color: #cce4ff; font-family: monospace; }
