@@ -62,6 +62,8 @@ export default function App() {
     });
   }
 
+  
+
   function handleContextMenu(e, taskId) {
     setContextMenu({ taskId, x: e.clientX, y: e.clientY });
   }
