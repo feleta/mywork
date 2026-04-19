@@ -259,6 +259,9 @@ Grid布局写法
 第二题，第四题为
 https://github.com/feleta/mywork.git
 
+服务启动 cd server         node server.js
+前端 npm run dev
+node版本为18
 
 第三题：
 
