@@ -1,0 +1,320 @@
+第一题：
+Flex布局写法
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>双栏布局 — Flex</title>
+    <style>
+      /* ── Reset ── */
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      html,
+      body {
+        height: 100%;
+        overflow: hidden; /* 禁止全局滚动条 */
+      }
+
+      /* ── 外层容器：Flex 行，撑满视口 ── */
+      .layout {
+        display: flex;
+        height: 100vh;
+      }
+
+      /* ── 左侧栏 ── */
+      .sidebar {
+        /*
+        总宽度 = padding(50px×2) + border(20px×2) + content = 300px
+        box-sizing: border-box 时 width 已包含 padding + border
+      */
+        width: 300px;
+        min-width: 300px; /* 防止被 flex 压缩 */
+        flex-shrink: 0; /* 绝对不缩小 */
+        padding: 50px;
+        border: 20px solid #999;
+        background: lightgray;
+        overflow-y: auto; /* 侧边栏自身内容过多时可滚动 */
+      }
+
+      /* ── 右侧内容区 ── */
+      .content {
+        flex: 1 1 0; /* 填充剩余空间 */
+        min-width: 500px;
+        background: lightblue;
+        overflow-y: auto; /* 仅右侧出现滚动条 */
+        padding: 24px;
+      }
+
+      /* ── 卡片网格：auto-fill + minmax 实现响应式列数 ── */
+      .card-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        /* 最后一行不拉伸：用 justify-content: start 配合固定列宽 */
+        grid-template-columns: repeat(auto-fill, 300px);
+        justify-content: start;
+        gap: 12px;
+      }
+
+      .card {
+        width: 300px;
+        height: 400px;
+        background: #fff;
+        border-radius: 10px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        padding: 20px;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+      }
+
+      .card h3 {
+        font-size: 1.1rem;
+        color: #333;
+      }
+      .card p {
+        font-size: 0.875rem;
+        color: #666;
+        line-height: 1.6;
+      }
+
+      /* ── 响应式：< 800px 隐藏侧边栏 ── */
+      @media (max-width: 799px) {
+        .sidebar {
+          display: none;
+        }
+        .content {
+          min-width: 0;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="layout">
+      <!-- 左侧栏 -->
+      <aside class="sidebar">
+        <h2>侧边栏</h2>
+        <p>Flex 布局实现</p>
+        <p>总宽度 300px（含 padding 50px × 2 + border 20px × 2）</p>
+      </aside>
+
+      <!-- 右侧内容 -->
+      <main class="content">
+        <div class="card-grid" id="cardGrid"></div>
+      </main>
+    </div>
+
+    <script>
+      // 动态生成 20 张卡片
+      const grid = document.getElementById("cardGrid");
+      for (let i = 1; i <= 20; i++) {
+        grid.insertAdjacentHTML(
+          "beforeend",
+          `
+        <div class="card">
+          <h3>卡片 ${i}</h3>
+          <p>这是第 ${i} 张卡片的内容描述。卡片宽度固定 300px，高度 400px，行列间距 12px，最后一行不拉伸。</p>
+        </div>
+      `,
+        );
+      }
+    </script>
+  </body>
+</html>
+
+
+Grid布局写法
+
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>双栏布局 — Grid</title>
+    <style>
+      /* ── Reset ── */
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      html,
+      body {
+        height: 100%;
+        overflow: hidden; /* 禁止全局滚动条 */
+      }
+
+      /*
+      ── 外层容器：Grid 双列，撑满视口 ──
+      左列：300px（含 padding + border，box-sizing: border-box）
+      右列：剩余空间，最小 500px
+    */
+      .layout {
+        display: grid;
+        grid-template-columns: 300px minmax(500px, 1fr);
+        height: 100vh;
+      }
+
+      /* ── 左侧栏 ── */
+      .sidebar {
+        padding: 50px;
+        border: 20px solid #999;
+        background: lightgray;
+        overflow-y: auto;
+      }
+
+      /* ── 右侧内容区 ── */
+      .content {
+        background: lightblue;
+        overflow-y: auto; /* 仅右侧出现滚动条 */
+        padding: 24px;
+      }
+
+      /* ── 卡片网格 ── */
+      .card-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, 300px);
+        justify-content: start;
+        gap: 12px;
+      }
+
+      .card {
+        width: 300px;
+        height: 400px;
+        background: #fff;
+        border-radius: 10px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        padding: 20px;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+      }
+
+      .card h3 {
+        font-size: 1.1rem;
+        color: #333;
+      }
+      .card p {
+        font-size: 0.875rem;
+        color: #666;
+        line-height: 1.6;
+      }
+
+      /* ── 响应式：< 800px 隐藏侧边栏，右侧独占 ── */
+      @media (max-width: 799px) {
+        .layout {
+          grid-template-columns: 1fr; /* 单列 */
+        }
+        .sidebar {
+          display: none;
+        }
+        .content {
+          min-width: 0;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="layout">
+      <!-- 左侧栏 -->
+      <aside class="sidebar">
+        <h2>侧边栏</h2>
+        <p>Grid 布局实现</p>
+        <p>总宽度 300px（含 padding 50px × 2 + border 20px × 2）</p>
+      </aside>
+
+      <!-- 右侧内容 -->
+      <main class="content">
+        <div class="card-grid" id="cardGrid"></div>
+      </main>
+    </div>
+
+    <script>
+      const grid = document.getElementById("cardGrid");
+      for (let i = 1; i <= 20; i++) {
+        grid.insertAdjacentHTML(
+          "beforeend",
+          `
+        <div class="card">
+          <h3>卡片 ${i}</h3>
+          <p>这是第 ${i} 张卡片的内容描述。卡片宽度固定 300px，高度 400px，行列间距 12px，最后一行不拉伸。</p>
+        </div>
+      `,
+        );
+      }
+    </script>
+  </body>
+</html>
+
+
+第二题，第四题为
+https://github.com/feleta/mywork.git
+
+
+第三题：
+
+/**
+ * 将扁平权限菜单数组转换为树形结构
+ * @param {Array<{ id: number, parentId: number|null, name: string }>} list
+ * @returns {Array} 树形结构根节点数组
+ */
+function buildMenuTree(list) {
+  const map = new Map();
+
+  // 第一次遍历：建立 id -> node 映射，初始化 children
+  for (const item of list) {
+    map.set(item.id, { ...item, children: [] });
+  }
+
+  const roots = [];
+
+  // 第二次遍历：挂载到父节点或收集为根节点
+  for (const item of list) {
+    const node = map.get(item.id);
+    if (item.parentId == null || !map.has(item.parentId)) {
+      roots.push(node);
+    } else {
+      map.get(item.parentId).children.push(node);
+    }
+  }
+
+  return roots;
+}
+
+
+// ── 测试 ──────────────────────────────────────
+const flat = [
+  { id: 1,  parentId: null, name: '系统管理' },
+  { id: 2,  parentId: null, name: '内容管理' },
+  { id: 3,  parentId: 1,    name: '用户管理' },
+  { id: 4,  parentId: 1,    name: '角色管理' },
+  { id: 5,  parentId: 3,    name: '用户列表' },
+  { id: 6,  parentId: 3,    name: '用户新增' },
+  { id: 7,  parentId: 2,    name: '文章管理' },
+];
+
+const tree = buildMenuTree(flat);
+console.log(JSON.stringify(tree, null, 2));
+第五题：
+1.我的提示词为：我需要做一个同域多 iframe 并行任务管理器项目，帮我搭建框架，使用React，管理器左侧为工作区，支持新建与右侧删除，默认主任务为T1，主任务可广播全部子任务，子任务通过任一子任务ID实现通讯，具体样式参考图片。项目需要通过websocket实现通讯功能，使用node完成服务端功能，封装websocket实现主动发送消息，形式如下const ws = new WsClient('wss://example.com/api'); 
+// 像 HTTP 一样 await 一次请求 
+const result = await ws.request({ action: 'getUser', id: 42 }); 
+console.log(result); // 服务端返回的 response 对象
+，服务需要拥有心跳检测，断开重连。
+
+2.AI为我搭建了项目框架，并在此基础上联动服务端基本实现了通讯功能，在此基础上我进行了调试，不出意外的存在bug，对bug进行投喂，不停的测试
+
+3.最终代码实现了题目的要求
+4.AI的使用可以大大提高我们的工作效率，当然AI也存在着许多问题，经常无法理解你的具体需求，我们需要将需求切片拆分，精准投喂，对AI生产的代码需要仔细检查他的回答是否符合要求。我认为在使用AI时不能将整个项目文档投喂，很有可以会脱离我们的控制，对于可能出现的bug会因为不熟悉项目结构在无法快速反应。
+
+
+
